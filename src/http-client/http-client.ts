@@ -38,7 +38,7 @@ export default class HttpClient {
   }
 
   public setAuthorization(token: string): void {
-    this.client.defaults.headers.Authorization = `Bearer ${token}`;
+    this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
 
   public async request(

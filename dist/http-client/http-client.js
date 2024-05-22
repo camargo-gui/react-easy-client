@@ -59,7 +59,7 @@ class HttpClient {
         return HttpClient.instance;
     }
     setAuthorization(token) {
-        this.client.defaults.headers.Authorization = `Bearer ${token}`;
+        this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
     request(_a) {
         return __awaiter(this, arguments, void 0, function* ({ method, path, data, headers, params }) {
