@@ -37,6 +37,7 @@ const http_client_response_1 = require("./entitites/http-client-response");
 const react_toastify_1 = require("react-toastify");
 class HttpClient {
     constructor(baseURL) {
+        this.customizedErrorHandling = () => { };
         this.client = axios_1.default.create({
             baseURL
         });
@@ -61,8 +62,11 @@ class HttpClient {
     setAuthorization(token) {
         this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
-    request(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ method, path, data, headers, params }) {
+    setCustomizedErrorHandling(customizedErrorHandling) {
+        this.customizedErrorHandling = customizedErrorHandling;
+    }
+    request({ method, path, data, headers, params }) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield this.client.request({
                     url: path,
@@ -74,7 +78,10 @@ class HttpClient {
                 return new http_client_response_1.HttpClientResponse(response.status, response.data);
             }
             catch (error) {
-                if (error instanceof axios_1.AxiosError) {
+                if (this.customizedErrorHandling) {
+                    this.customizedErrorHandling();
+                }
+                else if (error instanceof axios_1.AxiosError) {
                     this.handleError(error);
                     throw error;
                 }
