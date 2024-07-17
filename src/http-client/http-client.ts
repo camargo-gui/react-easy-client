@@ -10,7 +10,7 @@ export default class HttpClient {
 
   private client: AxiosInstance;
 
-  private customizedErrorHandling: () => void = () => {};
+  private customizedErrorHandling: (error: AxiosError) => void = () => {};
 
   private constructor(baseURL?: string){
     this.client = axios.create({
@@ -43,7 +43,7 @@ export default class HttpClient {
     this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
 
-  public setCustomizedErrorHandling(customizedErrorHandling: () => void): void {
+  public setCustomizedErrorHandling(customizedErrorHandling: (error: AxiosError) => void): void {
     this.customizedErrorHandling = customizedErrorHandling;
   }
 
@@ -61,7 +61,7 @@ export default class HttpClient {
       return new HttpClientResponse(response.status, response.data);
     } catch (error) {
       if (this.customizedErrorHandling){
-        this.customizedErrorHandling();
+        this.customizedErrorHandling(error as AxiosError);
       }
       else if (error instanceof AxiosError) {
         this.handleError(error);

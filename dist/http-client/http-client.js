@@ -79,7 +79,7 @@ class HttpClient {
             }
             catch (error) {
                 if (this.customizedErrorHandling) {
-                    this.customizedErrorHandling();
+                    this.customizedErrorHandling(error);
                 }
                 else if (error instanceof axios_1.AxiosError) {
                     this.handleError(error);

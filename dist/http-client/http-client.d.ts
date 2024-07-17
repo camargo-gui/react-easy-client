@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { HttpClientRequest } from "./entitites/http-client-request";
 import { HttpClientResponse } from "./entitites/http-client-response";
 export default class HttpClient {
@@ -9,6 +10,6 @@ export default class HttpClient {
     private handleError;
     static getInstance(baseURL?: string): HttpClient;
     setAuthorization(token: string): void;
-    setCustomizedErrorHandling(customizedErrorHandling: () => void): void;
+    setCustomizedErrorHandling(customizedErrorHandling: (error: AxiosError) => void): void;
     request({ method, path, data, headers, params }: HttpClientRequest): Promise<HttpClientResponse | undefined>;
 }
